@@ -1,0 +1,54 @@
+﻿@*@model IEnumerable<OnlineExamSystem.ViewModel.OptionViewModel>*@
+@model OnlineExamSystem.ViewModel.OptionViewModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Responds</title>
+</head>
+<body>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>التصويت</h4>
+        <hr />
+
+        <div class="question">
+            <div class="question-title">@ViewBag.Polllist[0].pollsubject </div>
+            @*<div class="question-title">@ViewBag.Polllist[0].pollsubject - @ViewBag.Polllist[0].pollId</div>*@
+            <div class="question-list">
+                @foreach (var item in ViewBag.Polllist)
+                {
+                    if (ViewBag.Polllist[0].pollId == item.pollOptionId)
+                    {
+                        @*@item.optiontext <input type="radio" asp-for="" name="choose" value="@item.Questionid" id="@item.pollId" />*@
+                        @item.optiontext
+                        @Html.HiddenFor(m => m.prs.pollid, new { @value = ViewBag.Polllist[0].pollId })
+                        @Html.RadioButtonFor(m => m.prs.optionid, new { @value = item.Questionid }, new { htmlAttributes = new { @class = "form-control" } });
+
+                        @*@Html.RadioButtonFor(model=>model.polo.pollOptionId,item.Questionid, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @*@Html.RadioButtonFor(m => m.selectedoption, item.polllid) @item.optiontext
+                @Html.RadioButtonFor(model => model.PollOption.selectedoption ,new { htmlAttributes = new { @class = "form-control" } })*@
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+﻿@model OnlineExamSystem.ViewModel.OptionViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>OptionViewModel</h4>
+        <hr />
+        <dl class="dl-horizontal"></dl>
+
+        <div class="question">
+            <div class="question-title">@ViewBag.Detaillist.pollsubject - @ViewBag.Detaillist.pollId</div>
+            <div class="question-list">
+                @foreach (var item in ViewBag.Detaillist)
+                {
+                    if (ViewBag.Detaillist.pollId == item.pollOptionId)
+                    {
+                        @item.optiontext 
+                        @item.RpollOptionId.Count
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

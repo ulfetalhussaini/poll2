@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="polldbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="PollOptions">
+          <Key>
+            <PropertyRef Name="_id" />
+          </Key>
+          <Property Name="_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="pollid" Type="int" Nullable="false" />
+          <Property Name="optiontext" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pollresponse">
+          <Key>
+            <PropertyRef Name="_id" />
+          </Key>
+          <Property Name="_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="pollid" Type="int" Nullable="false" />
+          <Property Name="optionid" Type="int" Nullable="false" />
+          <Property Name="ResponseCount" Type="int" />
+        </EntityType>
+        <EntityType Name="Polls">
+          <Key>
+            <PropertyRef Name="_id" />
+          </Key>
+          <Property Name="_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="pollsubject" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PollCount" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_pollresponse_PollOptions">
+          <End Role="PollOptions" Type="Self.PollOptions" Multiplicity="1" />
+          <End Role="pollresponse" Type="Self.pollresponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PollOptions">
+              <PropertyRef Name="_id" />
+            </Principal>
+            <Dependent Role="pollresponse">
+              <PropertyRef Name="optionid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pollresponse_Polls">
+          <End Role="Polls" Type="Self.Polls" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="pollresponse" Type="Self.pollresponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Polls">
+              <PropertyRef Name="_id" />
+            </Principal>
+            <Dependent Role="pollresponse">
+              <PropertyRef Name="pollid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="polldbModelStoreContainer">
+          <EntitySet Name="PollOptions" EntityType="Self.PollOptions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pollresponse" EntityType="Self.pollresponse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Polls" EntityType="Self.Polls" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_pollresponse_PollOptions" Association="Self.FK_pollresponse_PollOptions">
+            <End Role="PollOptions" EntitySet="PollOptions" />
+            <End Role="pollresponse" EntitySet="pollresponse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pollresponse_Polls" Association="Self.FK_pollresponse_Polls">
+            <End Role="Polls" EntitySet="Polls" />
+            <End Role="pollresponse" EntitySet="pollresponse" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="polldbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="PollOption">
+          <Key>
+            <PropertyRef Name="C_id" />
+          </Key>
+          <Property Name="C_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="pollid" Type="Int32" Nullable="false" />
+          <Property Name="optiontext" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Poll" Relationship="Self.FK_PollOptions_Polls" FromRole="PollOptions" ToRole="Polls" />
+          <NavigationProperty Name="pollresponses" Relationship="Self.FK_pollresponse_PollOptions" FromRole="PollOptions" ToRole="pollresponse" />
+        </EntityType>
+        <EntityType Name="pollresponse">
+          <Key>
+            <PropertyRef Name="C_id" />
+          </Key>
+          <Property Name="C_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="pollid" Type="Int32" Nullable="false" />
+          <Property Name="optionid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PollOption" Relationship="Self.FK_pollresponse_PollOptions" FromRole="pollresponse" ToRole="PollOptions" />
+          <NavigationProperty Name="Poll" Relationship="Self.FK_pollresponse_Polls" FromRole="pollresponse" ToRole="Polls" />
+          <Property Name="ResponseCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Poll">
+          <Key>
+            <PropertyRef Name="C_id" />
+          </Key>
+          <Property Name="C_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="pollsubject" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="PollOptions" Relationship="Self.FK_PollOptions_Polls" FromRole="Polls" ToRole="PollOptions" />
+          <NavigationProperty Name="pollresponses" Relationship="Self.FK_pollresponse_Polls" FromRole="Polls" ToRole="pollresponse" />
+          <Property Name="PollCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_PollOptions_Polls">
+          <End Role="Polls" Type="Self.Poll" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PollOptions" Type="Self.PollOption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Polls">
+              <PropertyRef Name="C_id" />
+            </Principal>
+            <Dependent Role="PollOptions">
+              <PropertyRef Name="pollid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pollresponse_PollOptions">
+          <End Role="PollOptions" Type="Self.PollOption" Multiplicity="1" />
+          <End Role="pollresponse" Type="Self.pollresponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PollOptions">
+              <PropertyRef Name="C_id" />
+            </Principal>
+            <Dependent Role="pollresponse">
+              <PropertyRef Name="optionid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_pollresponse_Polls">
+          <End Role="Polls" Type="Self.Poll" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="pollresponse" Type="Self.pollresponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Polls">
+              <PropertyRef Name="C_id" />
+            </Principal>
+            <Dependent Role="pollresponse">
+              <PropertyRef Name="pollid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="polldbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="PollOptions" EntityType="Self.PollOption" />
+          <EntitySet Name="pollresponses" EntityType="Self.pollresponse" />
+          <EntitySet Name="Polls" EntityType="Self.Poll" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK_PollOptions_Polls" Association="Self.FK_PollOptions_Polls">
+            <End Role="Polls" EntitySet="Polls" />
+            <End Role="PollOptions" EntitySet="PollOptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pollresponse_PollOptions" Association="Self.FK_pollresponse_PollOptions">
+            <End Role="PollOptions" EntitySet="PollOptions" />
+            <End Role="pollresponse" EntitySet="pollresponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_pollresponse_Polls" Association="Self.FK_pollresponse_Polls">
+            <End Role="Polls" EntitySet="Polls" />
+            <End Role="pollresponse" EntitySet="pollresponses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="polldbModelStoreContainer" CdmEntityContainer="polldbEntities">
+          <EntitySetMapping Name="PollOptions">
+            <EntityTypeMapping TypeName="polldbModel.PollOption">
+              <MappingFragment StoreEntitySet="PollOptions">
+                <ScalarProperty Name="C_id" ColumnName="_id" />
+                <ScalarProperty Name="pollid" ColumnName="pollid" />
+                <ScalarProperty Name="optiontext" ColumnName="optiontext" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pollresponses">
+            <EntityTypeMapping TypeName="polldbModel.pollresponse">
+              <MappingFragment StoreEntitySet="pollresponse">
+                <ScalarProperty Name="ResponseCount" ColumnName="ResponseCount" />
+                <ScalarProperty Name="C_id" ColumnName="_id" />
+                <ScalarProperty Name="pollid" ColumnName="pollid" />
+                <ScalarProperty Name="optionid" ColumnName="optionid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Polls">
+            <EntityTypeMapping TypeName="polldbModel.Poll">
+              <MappingFragment StoreEntitySet="Polls">
+                <ScalarProperty Name="PollCount" ColumnName="PollCount" />
+                <ScalarProperty Name="C_id" ColumnName="_id" />
+                <ScalarProperty Name="pollsubject" ColumnName="pollsubject" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="polldbModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
