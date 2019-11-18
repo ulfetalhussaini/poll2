@@ -1,0 +1,23 @@
+﻿USE [polldb]
+GO
+
+/****** Object:  Table [dbo].[Polls]    Script Date: 18/11/2019 09:33:31 م ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Polls](
+	[_id] [int] IDENTITY(1,1) NOT NULL,
+	[pollsubject] [nvarchar](50) NOT NULL,
+	[PollCount] [int] NULL,
+ CONSTRAINT [PK_Polls] PRIMARY KEY CLUSTERED 
+(
+	[_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+

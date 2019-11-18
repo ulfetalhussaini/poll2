@@ -1,0 +1,40 @@
+﻿USE [polldb]
+GO
+
+/****** Object:  Table [dbo].[pollresponse]    Script Date: 18/11/2019 09:34:10 م ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[pollresponse](
+	[_id] [int] IDENTITY(1,1) NOT NULL,
+	[pollid] [int] NOT NULL,
+	[optionid] [int] NOT NULL,
+	[ResponseCount] [int] NULL,
+ CONSTRAINT [PK_pollresponse] PRIMARY KEY CLUSTERED 
+(
+	[_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [dbo].[pollresponse]  WITH CHECK ADD  CONSTRAINT [FK_pollresponse_PollOptions] FOREIGN KEY([optionid])
+REFERENCES [dbo].[PollOptions] ([_id])
+GO
+
+ALTER TABLE [dbo].[pollresponse] CHECK CONSTRAINT [FK_pollresponse_PollOptions]
+GO
+
+ALTER TABLE [dbo].[pollresponse]  WITH CHECK ADD  CONSTRAINT [FK_pollresponse_Polls] FOREIGN KEY([pollid])
+REFERENCES [dbo].[Polls] ([_id])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+
+ALTER TABLE [dbo].[pollresponse] CHECK CONSTRAINT [FK_pollresponse_Polls]
+GO
+
+
